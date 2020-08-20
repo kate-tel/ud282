@@ -150,8 +150,147 @@ public class Game {
      */
     public String checkGameWinner(char [][]grid){
         String result = "None";
-        //Student code goes here ...
-        return result;
+        
+        //Scenario if there are 3 'X' or 3 'O' in one line (row)
+        int xInLines = 0;
+        int oInLines = 0;
+        for (int j = 0;j<=2;j++) {
+            for (int i = 0; i <= 2; i++) {
+                if (grid[i][j] == 'x') {
+                    xInLines++;
+                } else if (grid[i][j] == 'o') {
+                   oInLines++;
+                }
+            }
+            if (xInLines != 3) {
+                xInLines = 0;
+            }
+            if (oInLines != 3) {
+                oInLines =0;
+            }
+            if (xInLines == 3) {
+                return "X wins";
+            } else if (oInLines == 3){
+                return "O wins";
+            }
+        }
+
+        //Scenario if there are 3 'X' or 3 'O' in one column
+        int xInColumns = 0;
+        int oInColumns = 0;
+        for (int i = 0; i<=2; i++) {
+            for (int j = 0; j <= 2; j++) {
+                if (grid[i][j] == 'x') {
+                    xInColumns++;
+                } else if (grid[i][j] == 'o') {
+                    oInColumns++;
+                }
+            }
+            if (xInColumns != 3) {
+                xInColumns = 0;
+            }
+            if (oInColumns != 3) {
+                oInColumns = 0;
+            }
+
+            if (xInColumns == 3) {
+                return "X wins";
+            } else if (oInColumns == 3) {
+                return "O wins";
+            }
+        }
+
+        //Scenario if there are 3 'X' or 3 'O' in diagonal from left upper corner to right lower corner
+        int leftToRightDiagonalWithX = 0;
+        int leftToRightDiagonalWithO = 0;
+
+        for (int i = 0; i<=2; i++) {
+            for (int j = 0; j <= 2; j++) {
+                if (grid[i][j] == 'x') {
+                    if (i == j) {
+                        leftToRightDiagonalWithX += 1;
+                    }
+                } else if (grid[i][j] == 'o') {
+                    if (i == j) {
+                        leftToRightDiagonalWithO += 1;
+                    }
+                }
+            }
+        }
+        if (leftToRightDiagonalWithX == 3) {
+           return "X wins";
+        } else if (leftToRightDiagonalWithO == 3) {
+            return "O wins";
+        }
+
+        //Scenario if there are 3 'X' or 3 'O' in diagonal from right upper corner to left lower corner
+        int rightToLeftDiagonalWithX = 0;
+        int rightToLeftDiagonalWithO = 0;
+        int trackedI = 0;
+        int trackedJ = 0;
+        for (int i = 2; i>=0; i--) {
+            for (int j = 0; j <= 2; j++) {
+                if (grid[i][j] == 'x') {
+                    if (i == 2 && j == 0) {
+                        rightToLeftDiagonalWithX++;
+                        trackedI = i;
+                        trackedJ = j;
+                    }
+                    if ((trackedI - i == 1) && (j == trackedJ + 1)) {
+                        rightToLeftDiagonalWithX++;
+                        trackedI = i;
+                        trackedJ = j;
+                    }
+                } else if (grid[i][j] == 'o') {
+                    if (i == 2 && j == 0) {
+                        rightToLeftDiagonalWithO++;
+                        trackedI = i;
+                        trackedJ = j;
+                    }
+                    if ((trackedI - i == 1) && (j == trackedJ + 1)) {
+                        rightToLeftDiagonalWithO++;
+                        trackedI = i;
+                        trackedJ = j;
+                    }
+                }
+            }
+        }
+        if (rightToLeftDiagonalWithX == 3) {
+            return "X wins";
+        } else if (rightToLeftDiagonalWithO == 3) {
+            return "O wins";
+        }
+
+        // Alternative version of both diagonals
+        int axisX1 = 0, axisX2 = 0;
+        int axisO1 = 0, axisO2 = 0;
+        for (int i = 0; i <= 2; i++) {
+            if (grid[i][i] == 'x') {
+                axisX1++;
+            }
+            if (grid[i][2-i] == 'x') {
+                axisX2++;
+            }
+            if (grid[i][i] == 'o') {
+                axisO1++;
+            }
+            if (grid[i][2-i] == 'o') {
+                axisO2++;
+            }
+        }
+
+        if (axisX1 == 3 || axisX2 == 3) {
+            return "X wins";
+        }
+        if (axisO1 == 3 || axisO2 == 3) {
+            return "O wins";
+        }
+
+        // "Tie" (no winner) scenario
+        if (freeSpots == 0) {
+            return "Tie";
+        }
+            return result;
     }
 
     /**
